@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+        <link rel="icon" href="icon.ico">
+  <meta name="viewport" content="width=device-width">
+ <title>Чат Зёлёный Мыс</title>
+</head>
+<body id="b">
+    <style>body {
+        height: 100%;
+        background: linear-gradient(40deg, #8ec796, #659921);
+        overflow-x: hidden;
+overflow-y: hidden;
+min-width:400px;
+    }
+    .text {
+        color: white;
+        font-size: 27px;
+        position: sticky; 
+        top: 0;
+        width: 100%;
+        height: 140px;
+        background: linear-gradient(40deg, #8ec796, #659921);
+    }
+    form {
+        position: fixed;  left: 0; bottom: 0;
+        background: linear-gradient(40deg, #8ec796, #659921);
+        width: 100%;
+    }
+    .ot {
+        width: 100px;
+        height: 30px;
+        background-color: rgb(27, 175, 233);
+        color: white;
+        border-radius: 10%;
+    }
+    .chat {
+       
+        color: white;
+        font-size: 18px;
+        width: 400px;
+       min-height: 300px;
+        border: solid white 1px
+        
+        
+    }
+    .link{
+        border: solid 2px white;
+        color: white;
+        font-size: 19px;
+        height: 25px;
+    }
+    html { scroll-behavior: smooth; }
+    .topbutton {
+       width:80px;
+       z-index: 10;
+       border:2px solid #ccc;
+       background:#f7f7f7;
+       text-align:center;
+       padding:5px;
+position:fixed;
+bottom:28px;
+right:20px;
+cursor:pointer;
+color:#333;
+font-family:verdana;
+font-size:12px;
+border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+-khtml-border-radius: 5px;
+
+}
+    </style>
+    <center> 
+        <div class="text" ><p>Добро пожаловать в чат Зёлёный Мыс!💚</p><! -- если ты сюда залез и думаешь почему тут абзаца не заголовок. Потому что заголовок жирный а с этим фоном это не красиво!-->
+
+   <a href="http://192.168.0.100:5000" class="link">Рисовать!</a>  <a href="#to" class="link">Последние сообщение</a></p>
+   <br>
+</div>
+
+    <div id="chat" class="chat" ></div>
+    <p id="to">.</p>
+    <a href="#" title="Вернуться к началу" class="topbutton">⬆️Наверх⬆️</a>
+    <script type="module">
+       
+        
+        const chatEl = document.getElementById("chat");
+        const ws = new WebSocket("ws://127.0.0.1:8000");
+        ws.onmessage = (message) => {
+            const messages = JSON.parse(message.data);
+            messages.forEach((val) => {
+                const messageEl = document.createElement('div');
+                messageEl.appendChild(document.createTextNode(`${val.name}: ${val.message}`));
+                chat.appendChild(messageEl);
+            })
+        }
+        const send = (event) => {
+            event.preventDefault();
+            const name = document.getElementById("name").value;
+            const message = document.getElementById("message").value;
+            ws.send(JSON.stringify({
+                name, message
+            }))
+            return false;
+        }
+        const formEl = document.getElementById("messageForm");
+        formEl.addEventListener("submit", send);
+
+    </script>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<center>
+   <form id="messageForm">
+        <input type="text" name="name" id="name" placeholder="Ваше имя"  /> <br> <br>
+        <textarea name="message" type="text" id="message" cols="30" rows="7" placeholder="Напишите сообщение" ></textarea><br>
+        <input type="submit" value="Отправить" onClick="window.location='#to'" class="ot"/>
+    </form>
+<br><br>
+</body>
+</html>
